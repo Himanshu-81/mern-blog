@@ -1,0 +1,35 @@
+nav {
+    width: 100vw;
+    height: 5rem;
+    display: grid;
+    place-items: center;
+    background-color: var(255, 255, 255, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    border-bottom: 4px solid var(--color-bg);
+    backdrop-filter: blur(20px);
+}
+
+.nav__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.nav__logo {
+    width: 3rem;
+    display: block;
+}
+
+.nav__menu {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+}
+
+.nav__toggle-btn {
+    display: none;
+}
