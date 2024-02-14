@@ -1,0 +1,20 @@
+.login {
+    width: var(--form-width);
+    margin-inline: auto;
+    height: calc(100vh - 12rem);
+    display: grid;
+    place-items: center;
+}
+
+.login h2 {
+    margin-bottom: 2rem;
+}
+
+.login small {
+    display: block;
+    margin-top: 1.5rem;
+}
+
+.login small a {
+    color: var(--color-primary);
+}

@@ -103,6 +103,7 @@ section {
 .btn.primary {
     background-color: var(--color-primary);
     color: var(--color-white);
+    border: none;
 }
 
 .btn.category {

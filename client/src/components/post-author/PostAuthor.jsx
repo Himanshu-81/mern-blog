@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import Avatar from "../../images/avatar1.jpg";
 import "./PostAuthor.css";
 
-const PostAuthor = () => {
+const PostAuthor = ({ authorID }) => {
   return (
-    <Link to={`/posts/user/author`} className="post__author">
+    <Link to={`/posts/users/${authorID}`} className="post__author">
       <div className="post__author-avatar">
         <img src={Avatar} alt="" />
       </div>

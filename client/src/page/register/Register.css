@@ -1,0 +1,44 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border-radius: var(--radius-1);
+    resize: none;
+    border: none;
+}
+
+.form__error-message {
+    background-color: var(--color-red);
+    color: var(--color-white);
+    font-size: 0.8rem;
+    padding: 0.6rem 1rem;
+    border-radius: var(--radius-1);
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.register, .create-post {
+    width: var(--form-width);
+    margin-inline: auto;
+    height: calc(100vh - 12rem);
+    display: grid;
+    place-items: center;
+}
+
+.register h2 { /*login and create post*/
+    margin-bottom: 2rem;
+}
+
+.register small {
+    display: block;
+    margin-top: 1.5rem;
+}
+
+.register small a {
+    color: var(--color-primary);
+}
