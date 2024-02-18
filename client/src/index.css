@@ -136,3 +136,34 @@ section {
     display: block;
     width: 100%;
 }
+
+
+
+
+
+
+
+
+
+
+/* **********************MEDIA QUERIES (small screen) ***********************/
+
+@media (max-width: 800px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.6rem;
+    }
+
+    h3 {
+        font-size: 1.35rem;
+    }
+
+    .container {
+        width: var(--container-width-md);
+    }
+
+    
+}

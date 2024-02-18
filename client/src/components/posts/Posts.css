@@ -4,3 +4,12 @@
     gap: 4rem;
 }
 
+
+/* **********************MEDIA QUERIES (small screen) ***********************/
+
+@media (max-width: 800px){
+.posts__container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+}

@@ -28,3 +28,25 @@
 .author__info p {
     margin-top: 1rem;
 }
+
+
+/* **********************MEDIA QUERIES (small screen) ***********************/
+
+@media (max-width: 800px) {
+    .authors__container {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+    }
+
+    .dashboard__post {
+        flex-direction: column;
+    }
+
+    .dashboard__post-info {
+        gap: 1.5rem;
+    }
+
+    .dashboard__post-thumbnail {
+        width: 1.5rem;
+    }
+}

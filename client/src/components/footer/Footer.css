@@ -32,3 +32,11 @@ footer {
     padding: 1rem;
     font-weight: 300;
 }
+
+/* **********************MEDIA QUERIES (small screen) ***********************/
+
+@media screen and (max-width: 800px) {
+    .footer__categories {
+        flex-direction: column;
+    }
+}

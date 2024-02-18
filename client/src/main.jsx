@@ -15,6 +15,7 @@ import {
   CategoryPosts,
   Dashboard,
   EditPosts,
+  DeletePosts,
   Logout,
 } from "./page/index.js";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
       { path: "posts/users/:id", element: <AuthorPosts /> },
       { path: "myposts/:id", element: <Dashboard /> },
       { path: "posts/:id/edit", element: <EditPosts /> },
+      { path: "posts/:id/delete", element: <DeletePosts /> },
       { path: "logout", element: <Logout /> },
     ],
   },

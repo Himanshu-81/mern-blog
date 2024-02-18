@@ -1,20 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import PostAuthor from "../../components/post-author/PostAuthor";
 import { Link } from "react-router-dom";
 import Thumbnail from "../../images/blog23.jpg";
+import { DUMMY_POSTS } from "../../config";
+
 import "./PostDetails.css";
 
 const PostDetails = () => {
+  const [posts, setPosts] = useState(DUMMY_POSTS);
+
   return (
     <section className="post-detail">
       <div className="container post-detail__container">
         <div className="post-detail__header">
           <PostAuthor />
           <div className="post-detail__buttons">
-            <Link to={`posts/werwe/edit`} className="btn sm primary">
+            <Link to={`/posts/${posts.id}/edit`} className="btn sm primary">
               edit
             </Link>
-            <Link to={`posts/werwe/delete`} className="btn sm danger">
+            <Link to={`/posts/${posts.id}/delete`} className="btn sm danger">
               delete
             </Link>
           </div>

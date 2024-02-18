@@ -1,4 +1,4 @@
-.login {
+.create-post {
     width: var(--form-width);
     margin-inline: auto;
     height: calc(100vh - 12rem);
@@ -6,24 +6,21 @@
     place-items: center;
 }
 
-.login h2 {
-    margin-bottom: 2rem;
-}
-
-.login small {
-    display: block;
+.container p {
     margin-top: 1.5rem;
 }
 
-.login small a {
-    color: var(--color-primary);
+.ql-editor {
+    overflow: scroll;
+    background: var(--color-white);
+    height: 8rem;
 }
 
 
 /* **********************MEDIA QUERIES (small screen) ***********************/
 
 @media (max-width: 800px) {
-    .login {
+    .create-post {
         width: 100%;
     }
 }

@@ -27,3 +27,17 @@
 .post-detail p {
     margin-bottom: 0.7rem;
 }
+
+/* **********************MEDIA QUERIES (small screen) ***********************/
+
+@media screen and (max-width: 800px) {
+    .post-detail {
+        width: 100%;
+        background-color: transparent;
+        padding: 0;
+    }
+
+    .post-detail h1{
+        margin-top: 1rem;
+    }
+}

@@ -22,7 +22,7 @@ input, select, textarea {
     margin-bottom: 1rem;
 }
 
-.register, .create-post {
+.register {
     width: var(--form-width);
     margin-inline: auto;
     height: calc(100vh - 12rem);
@@ -41,4 +41,13 @@ input, select, textarea {
 
 .register small a {
     color: var(--color-primary);
+}
+
+
+/* **********************MEDIA QUERIES (small screen) ***********************/
+
+@media screen and (max-width: 800px) {
+    .register {
+        width: 100%;
+    }
 }

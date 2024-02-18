@@ -60,3 +60,13 @@
     margin-inline: auto;
     width: var(--form-width);
 }
+
+
+/* **********************MEDIA QUERIES (small screen) ***********************/
+
+@media (max-width: 800px) {
+    .form.profile__form {
+        margin-top: 2.5rem;
+        width: 100%;
+    }
+}

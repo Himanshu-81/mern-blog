@@ -33,3 +33,41 @@ nav {
 .nav__toggle-btn {
     display: none;
 }
+
+
+
+
+/* **********************MEDIA QUERIES (small screen) ***********************/
+
+@media (max-width: 800px) {
+    .nav__container {
+        position: relative;
+    }
+
+    .nav__menu {
+        position: absolute;
+        top: 5rem;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .nav__menu li {
+        width: 100%;
+        box-shadow: -2rem 4rem 4rem rgba(0, 0, 0, 0.26);   
+    }
+
+    .nav__menu li a {
+        display: block;
+        background: var(--color-white);
+        padding: 0.85rem 2.5rem;
+    }
+
+    .nav__toggle-btn {
+        display: inline-block;
+        background-color: transparent;
+        font-size: 1.5rem;
+        cursor: pointer;
+        border: none;
+    }
+}
