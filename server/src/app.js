@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
-import testRoutes from "./routes/test.routes.js";
+import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
+import userRoutes from "./routes/user.routes.js";
 
 const app = express();
 
@@ -26,7 +27,9 @@ app.use(
 );
 app.use(express.static("public"));
 // app.use(cookieParser());
+app.use(notFound);
+app.use(errorHandler);
 
-app.use("/api/test", testRoutes);
+app.use("/api/test", userRoutes);
 
 export { app };
