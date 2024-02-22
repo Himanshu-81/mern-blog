@@ -10,12 +10,12 @@ import {
 
 const router = Router();
 
-// router.post("/register", registerUser);
-// router.post("/login", loginUser);
+router.post("/register", registerUser);
+router.post("/login", loginUser);
 
-// router.get("/:id", getUser);
-// router.get("/", getAuthors);
-// router.post("/change-avatar", changeUserAvatar);
-// router.patch("/edit-user", updateUserDetails);
+router.get("/:id", getUser);
+router.get("/", getAuthors);
+router.post("/change-avatar", changeUserAvatar);
+router.patch("/edit-user", updateUserDetails);
 
 export default router;
