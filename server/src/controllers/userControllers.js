@@ -1,7 +1,23 @@
-import { asyncHandler } from "../utils/asynHandler.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { ApiError } from "../utils/apiError.js";
 import { User } from "../models/user.model.js";
+
+const generateAccessToken = async (id) => {
+  try {
+    const user = await User.findById(id);
+    const accessToken = user.generateAccessToken();
+
+    await user.save({ validateBeforeSave: false });
+
+    return { accessToken };
+  } catch (error) {
+    throw new ApiError(
+      500,
+      "Something went wrong while generating the accesstoken"
+    );
+  }
+};
 
 // REGISTERING THE NEW USER IN THE DATABASE
 // POST : api/users/register
@@ -76,22 +92,44 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Invalid credentials");
   }
 
+  const { accessToken } = await generateAccessToken(user._id);
+
   const loggedInUser = await User.findById(user._id).select("-password");
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
 
   return res
     .status(200)
+    .cookie("Access token", accessToken, options)
     .json(new ApiResponse(200, loggedInUser, "User logged in successfully"));
 });
 
 // TO GET THE USER PROFILE
 // POST : api/users/:id
 // PROTECTED ROUTE
-const getUser = asyncHandler(async (req, res) => {});
+const getUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const user = await User.findById(id).select("-password");
+
+  if (!user) {
+    throw new ApiError(404, "No user found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "User fetched successfully"));
+});
 
 // UPDATE THE USER AVATAR
 // GET : api/users/change-avatar
 // PROTECTED
-const changeUserAvatar = asyncHandler(async (req, res) => {});
+const changeUserAvatar = asyncHandler(async (req, res) => {
+  console.log(req.files);
+});
 
 // UPDATE THE USER DETAILS
 // PATCH: api/users/edit-user
@@ -101,7 +139,17 @@ const updateUserDetails = asyncHandler(async (req, res) => {});
 // GET ALL USERS
 // GET :api/users/
 // UNPROTECTED
-const getAuthors = asyncHandler(async (req, res) => {});
+const getAuthors = asyncHandler(async (req, res) => {
+  const authors = await User.find().select("-password");
+
+  if (!authors) {
+    throw new ApiError(500, "Internal server error while fetching the authors");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, authors, "Authors fetched successfully"));
+});
 
 export {
   registerUser,

@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-// import cookieParser from "cookie-parser";
+import cookieParser from "cookie-parser";
 import userRoutes from "./routes/user.routes.js";
 
 import { notFound, errorHandler } from "./middleware/errorHandler.js";
@@ -27,8 +27,7 @@ app.use(
     limit: "16kb",
   })
 );
-app.use(express.static("public"));
-// app.use(cookieParser());
+app.use(cookieParser());
 
 app.use("/api/users", userRoutes);
 
