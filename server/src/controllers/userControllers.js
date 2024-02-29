@@ -2,15 +2,18 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { ApiError } from "../utils/apiError.js";
 import { User } from "../models/user.model.js";
+import uploadOnCloudinary from "../utils/cloudinary.js";
 
-const generateAccessToken = async (id) => {
+const generateAccessAndRefreshToken = async (id) => {
   try {
     const user = await User.findById(id);
     const accessToken = user.generateAccessToken();
+    const refreshToken = user.generateRefreshToken();
 
+    user.refreshToken = refreshToken;
     await user.save({ validateBeforeSave: false });
 
-    return { accessToken };
+    return { accessToken, refreshToken };
   } catch (error) {
     throw new ApiError(
       500,
@@ -57,13 +60,30 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(402, "Password and confirm password do no match");
   }
 
+  const avatarLocalPath = req.file?.path;
+
+  if (!avatarLocalPath) {
+    throw new ApiError(400, "Avatar is required");
+  }
+
+  const avatar = await uploadOnCloudinary(avatarLocalPath);
+
+  if (!avatar) {
+    throw new ApiError(500, "Failed to upload on cloudinary");
+  }
+
   const user = await User.create({
     name,
     email: email.toLowerCase(),
     password,
+    avatar: avatar.url,
   });
 
   const newUser = await User.findById(user._id).select("-password");
+
+  if (!newUser) {
+    throw new ApiError(500, "Something went wrong while registering the user");
+  }
 
   return res
     .status(200)
@@ -92,9 +112,13 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Invalid credentials");
   }
 
-  const { accessToken } = await generateAccessToken(user._id);
+  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
+    user._id
+  );
 
-  const loggedInUser = await User.findById(user._id).select("-password");
+  const loggedInUser = await User.findById(user._id).select(
+    "-password -refreshToken"
+  );
 
   const options = {
     httpOnly: true,
@@ -103,8 +127,34 @@ const loginUser = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .cookie("Access token", accessToken, options)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
     .json(new ApiResponse(200, loggedInUser, "User logged in successfully"));
+});
+
+const logoutUser = asyncHandler(async (req, res) => {
+  await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set: {
+        refreshToken: null,
+      },
+    },
+    {
+      new: true,
+    }
+  );
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  return res
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json(new ApiResponse(200, "Logout successfull"));
 });
 
 // TO GET THE USER PROFILE
@@ -128,7 +178,7 @@ const getUser = asyncHandler(async (req, res) => {
 // GET : api/users/change-avatar
 // PROTECTED
 const changeUserAvatar = asyncHandler(async (req, res) => {
-  console.log(req.files);
+  const localAvatarPath = req.files?.avatar[0]?.path;
 });
 
 // UPDATE THE USER DETAILS
@@ -154,6 +204,7 @@ const getAuthors = asyncHandler(async (req, res) => {
 export {
   registerUser,
   loginUser,
+  logoutUser,
   getUser,
   changeUserAvatar,
   updateUserDetails,

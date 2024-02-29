@@ -6,16 +6,20 @@ import {
   changeUserAvatar,
   updateUserDetails,
   getAuthors,
+  logoutUser,
 } from "../controllers/userControllers.js";
+import { upload } from "../middleware/multerMiddleware.js";
+import { verifyJWT } from "../middleware/authMiddleware.js";
 
 const router = Router();
 
-router.post("/register", registerUser);
-router.post("/login", loginUser);
+router.route("/register").post(upload.single("avatar"), registerUser);
+router.route("/login").post(loginUser);
+router.route("/logout").post(verifyJWT, logoutUser);
 
-router.get("/:id", getUser);
-router.get("/", getAuthors);
-router.post("/change-avatar", changeUserAvatar);
-router.patch("/edit-user", updateUserDetails);
+router.route("/:id").get(getUser);
+router.route("/").get(getAuthors);
+router.route("/change-avatar").post(changeUserAvatar);
+router.route("edit-user").patch(updateUserDetails);
 
 export default router;
