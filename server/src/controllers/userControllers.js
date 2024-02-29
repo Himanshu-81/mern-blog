@@ -2,7 +2,10 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { ApiError } from "../utils/apiError.js";
 import { User } from "../models/user.model.js";
-import uploadOnCloudinary from "../utils/cloudinary.js";
+import {
+  deleteFromCloudinary,
+  uploadOnCloudinary,
+} from "../utils/cloudinary.js";
 
 const generateAccessAndRefreshToken = async (id) => {
   try {
@@ -178,7 +181,41 @@ const getUser = asyncHandler(async (req, res) => {
 // GET : api/users/change-avatar
 // PROTECTED
 const changeUserAvatar = asyncHandler(async (req, res) => {
-  const localAvatarPath = req.files?.avatar[0]?.path;
+  const avatarLocalPath = req.file?.path;
+
+  if (!avatarLocalPath) {
+    throw new ApiError(400, "Avatar file is missing");
+  }
+
+  const userBeforeUpdate = await User.findById(req.user?._id);
+
+  if (!userBeforeUpdate) {
+    throw new ApiError(404, "No user found");
+  }
+
+  const oldAvatarUrl = userBeforeUpdate?.avatar;
+  if (!oldAvatarUrl) {
+    throw new ApiError(404, "No avatar found");
+  }
+
+  const avatar = await uploadOnCloudinary(avatarLocalPath);
+  if (!avatar.url) {
+    throw new ApiError(400, "Error while uploading avatar on cloudinary");
+  }
+
+  const user = await User.findByIdAndUpdate(
+    req.user?._id,
+    {
+      $set: { avatar: avatar.url },
+    },
+    { new: true }
+  ).select("-password");
+
+  await deleteFromCloudinary(oldAvatarUrl);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "Avatar updated successfully"));
 });
 
 // UPDATE THE USER DETAILS

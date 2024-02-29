@@ -15,11 +15,15 @@ const router = Router();
 
 router.route("/register").post(upload.single("avatar"), registerUser);
 router.route("/login").post(loginUser);
-router.route("/logout").post(verifyJWT, logoutUser);
 
 router.route("/:id").get(getUser);
 router.route("/").get(getAuthors);
-router.route("/change-avatar").post(changeUserAvatar);
 router.route("edit-user").patch(updateUserDetails);
+
+// secured route
+router
+  .route("/change-avatar")
+  .post(verifyJWT, upload.single("avatar"), changeUserAvatar);
+router.route("/logout").post(verifyJWT, logoutUser);
 
 export default router;
