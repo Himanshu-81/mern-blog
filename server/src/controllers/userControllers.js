@@ -132,7 +132,13 @@ const loginUser = asyncHandler(async (req, res) => {
     .status(200)
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
-    .json(new ApiResponse(200, loggedInUser, "User logged in successfully"));
+    .json(
+      new ApiResponse(
+        200,
+        { loggedInUser, accessToken, refreshToken },
+        "User logged in successfully"
+      )
+    );
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
@@ -166,7 +172,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 const getUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  const user = await User.findById(id).select("-password");
+  const user = await User.findById(id).select("-password -refreshToken");
 
   if (!user) {
     throw new ApiError(404, "No user found");
@@ -221,7 +227,56 @@ const changeUserAvatar = asyncHandler(async (req, res) => {
 // UPDATE THE USER DETAILS
 // PATCH: api/users/edit-user
 // PROTECTED
-const updateUserDetails = asyncHandler(async (req, res) => {});
+const updateUserDetails = asyncHandler(async (req, res) => {
+  const { name, email } = req.body;
+
+  if (!name && !email) {
+    throw new ApiError(402, "Fields are missing");
+  }
+
+  const updateFields = {};
+
+  if (name) updateFields.name = name;
+  if (email) updateFields.email = email;
+
+  const updatedUser = await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set: { ...updateFields },
+    },
+    { new: true }
+  ).select("-password -refreshToken");
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, updatedUser, "User details updated"));
+});
+
+// UPDATE THE CURRENT PASSWORD
+// PATCH : api/users/update-password
+// PROTECTED
+const updateCurrentPassword = asyncHandler(async (req, res) => {
+  const { newPassword, oldPassword } = req.body;
+
+  if (!newPassword || !oldPassword) {
+    throw new ApiError(402, "All fields are missing");
+  }
+
+  const user = await User.findById(req.user._id);
+
+  const oldPasswordValidate = await user.isPasswordCorrect(oldPassword);
+
+  if (!oldPasswordValidate) {
+    throw new ApiError(401, "Old password do not match");
+  }
+
+  user.password = newPassword;
+  await user.save({ validateBeforeSave: false });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Password is updated succesfully"));
+});
 
 // GET ALL USERS
 // GET :api/users/
@@ -245,5 +300,6 @@ export {
   getUser,
   changeUserAvatar,
   updateUserDetails,
+  updateCurrentPassword,
   getAuthors,
 };

@@ -5,6 +5,7 @@ import {
   getUser,
   changeUserAvatar,
   updateUserDetails,
+  updateCurrentPassword,
   getAuthors,
   logoutUser,
 } from "../controllers/userControllers.js";
@@ -18,12 +19,13 @@ router.route("/login").post(loginUser);
 
 router.route("/:id").get(getUser);
 router.route("/").get(getAuthors);
-router.route("edit-user").patch(updateUserDetails);
 
 // secured route
+router.route("/logout").post(verifyJWT, logoutUser);
 router
   .route("/change-avatar")
   .post(verifyJWT, upload.single("avatar"), changeUserAvatar);
-router.route("/logout").post(verifyJWT, logoutUser);
+router.route("/update-user").patch(verifyJWT, updateUserDetails);
+router.route("/update-password").patch(verifyJWT, updateCurrentPassword);
 
 export default router;
