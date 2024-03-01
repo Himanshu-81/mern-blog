@@ -7,6 +7,28 @@ import {
   uploadOnCloudinary,
 } from "../utils/cloudinary.js";
 
+const passwordValidation = (password) => {
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasLowerCase = /[a-z]/.test(password);
+  const hasNumber = /[0-9]/.test(password);
+  const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(
+    password
+  );
+
+  if (!hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
+    throw new ApiError(
+      400,
+      "Password must contain at least one uppercase, lowercase, number, and special character"
+    );
+  }
+
+  if (password.trim().length < 6) {
+    throw new ApiError(400, "Password should be greater than 6 characters");
+  }
+
+  return password;
+};
+
 const generateAccessAndRefreshToken = async (id) => {
   try {
     const user = await User.findById(id);
@@ -41,27 +63,11 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Email is already exists");
   }
 
-  const hasUpperCase = /[A-Z]/.test(password);
-  const hasLowerCase = /[a-z]/.test(password);
-  const hasNumber = /[0-9]/.test(password);
-  const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(
-    password
-  );
-
-  if (!hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
-    throw new ApiError(
-      400,
-      "Password must contain at least one uppercase, lowercase, number, and special character"
-    );
-  }
-
-  if (password.trim().length < 6) {
-    throw new ApiError(400, "Password should be greater than 6 characters");
-  }
-
   if (password != confirmPassword) {
     throw new ApiError(402, "Password and confirm password do no match");
   }
+
+  const passwordCheck = passwordValidation(password);
 
   const avatarLocalPath = req.file?.path;
 
@@ -78,7 +84,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const user = await User.create({
     name,
     email: email.toLowerCase(),
-    password,
+    password: passwordCheck,
     avatar: avatar.url,
   });
 
@@ -262,6 +268,10 @@ const updateCurrentPassword = asyncHandler(async (req, res) => {
     throw new ApiError(402, "All fields are missing");
   }
 
+  if (newPassword == oldPassword) {
+    throw new ApiError(400, "New password and old password cannot be the same");
+  }
+
   const user = await User.findById(req.user._id);
 
   const oldPasswordValidate = await user.isPasswordCorrect(oldPassword);
@@ -270,7 +280,9 @@ const updateCurrentPassword = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Old password do not match");
   }
 
-  user.password = newPassword;
+  const passwordCheck = passwordValidation(newPassword);
+
+  user.password = passwordCheck;
   await user.save({ validateBeforeSave: false });
 
   return res
