@@ -27,7 +27,7 @@ Clone the project
 
 Go to the project directory 
 
-***To run server:***
+### To run server:
 
 ```bash
   cd server
@@ -45,7 +45,7 @@ Start the server
   npm run dev
 ```
 
-***To run client:***
+### To run client:
 
 ```bash
   cd client
