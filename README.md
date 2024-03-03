@@ -1,13 +1,12 @@
-
 # MERN-blog
 
-MERN-Blog offers authors a seamless platform to create, publish, and manage their blogs online. With intuitive features, customizable themes, and real-time updates, unleash your creativity and join our vibrant community today!
+## Disclaimer --> Project is still in progress
 
+MERN-Blog offers authors a seamless platform to create, publish, and manage their blogs online. With intuitive features, customizable themes, and real-time updates, unleash your creativity and join our vibrant community today!
 
 ## Authors
 
 - [@Himanshu-811](https://github.com/Himanshu-81)
-
 
 ## Tech Stack
 
@@ -25,7 +24,7 @@ Clone the project
   git clone https://github.com/Himanshu-81/mern-blog.git
 ```
 
-Go to the project directory 
+Go to the project directory
 
 ### To run server:
 
@@ -61,3 +60,4 @@ Start the server
 
 ```bash
   npm run dev
+```
