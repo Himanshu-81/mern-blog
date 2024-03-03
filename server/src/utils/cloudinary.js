@@ -8,11 +8,12 @@ cloudinary.config({
   api_secret: "YlREzsMNTdTTnUBDmEG1Q6_zveQ",
 });
 
-const uploadOnCloudinary = async (localFilePath) => {
+const uploadOnCloudinary = async (localFilePath, folder) => {
   try {
     if (!localFilePath) return null;
     const response = await cloudinary.uploader.upload(localFilePath, {
       resource_type: "auto",
+      folder: `${folder}`,
     });
 
     fs.unlinkSync(localFilePath);
@@ -23,10 +24,11 @@ const uploadOnCloudinary = async (localFilePath) => {
   }
 };
 
-const deleteFromCloudinary = async (localFilePath) => {
+const deleteFromCloudinary = async (localFilePath, folder) => {
   try {
     if (!localFilePath) return null;
 
+    console.log(localFilePath);
     const publicIdWithExtension = localFilePath.substring(
       localFilePath.lastIndexOf("/") + 1
     );
@@ -35,13 +37,12 @@ const deleteFromCloudinary = async (localFilePath) => {
       0,
       publicIdWithExtension.lastIndexOf(".")
     );
+    console.log(publicId);
 
-    const response = await cloudinary.api.delete_resources([publicId], {
-      type: "upload",
-      resource_type: "image",
-    });
+    const response = await cloudinary.uploader.destroy(`${folder}/${publicId}`);
     return response;
   } catch (error) {
+    console.log(error);
     throw new ApiError(400, "Error in deleting old avatar from cloudinary");
   }
 };

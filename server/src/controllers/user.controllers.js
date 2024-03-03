@@ -75,7 +75,7 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Avatar is required");
   }
 
-  const avatar = await uploadOnCloudinary(avatarLocalPath);
+  const avatar = await uploadOnCloudinary(avatarLocalPath, "authors");
 
   if (!avatar) {
     throw new ApiError(500, "Failed to upload on cloudinary");
@@ -210,7 +210,7 @@ const changeUserAvatar = asyncHandler(async (req, res) => {
     throw new ApiError(404, "No avatar found");
   }
 
-  const avatar = await uploadOnCloudinary(avatarLocalPath);
+  const avatar = await uploadOnCloudinary(avatarLocalPath, "authors");
   if (!avatar.url) {
     throw new ApiError(400, "Error while uploading avatar on cloudinary");
   }
@@ -223,7 +223,7 @@ const changeUserAvatar = asyncHandler(async (req, res) => {
     { new: true }
   ).select("-password");
 
-  await deleteFromCloudinary(oldAvatarUrl);
+  await deleteFromCloudinary(oldAvatarUrl, "authors");
 
   return res
     .status(200)

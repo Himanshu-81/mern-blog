@@ -8,9 +8,9 @@ import {
   updateCurrentPassword,
   getAuthors,
   logoutUser,
-} from "../controllers/userControllers.js";
-import { upload } from "../middleware/multerMiddleware.js";
-import { verifyJWT } from "../middleware/authMiddleware.js";
+} from "../controllers/user.controllers.js";
+import { upload } from "../middleware/multer.middleware.js";
+import { verifyJWT } from "../middleware/auth.middleware.js";
 
 const router = Router();
 
