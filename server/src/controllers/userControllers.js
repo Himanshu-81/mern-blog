@@ -240,13 +240,19 @@ const updateUserDetails = asyncHandler(async (req, res) => {
     throw new ApiError(402, "Fields are missing");
   }
 
+  const existedUser = await User.findOne({ email });
+
+  if (existedUser) {
+    throw new ApiError(401, "Email is already exists choose another");
+  }
+
   const updateFields = {};
 
   if (name) updateFields.name = name;
   if (email) updateFields.email = email;
 
   const updatedUser = await User.findByIdAndUpdate(
-    req.user._id,
+    req.user?._id,
     {
       $set: { ...updateFields },
     },
