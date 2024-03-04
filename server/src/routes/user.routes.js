@@ -17,10 +17,10 @@ const router = Router();
 router.route("/register").post(upload.single("avatar"), registerUser);
 router.route("/login").post(loginUser);
 
-router.route("/:id").get(getUser);
 router.route("/").get(getAuthors);
 
 // secured route
+router.route("/get-user").get(verifyJWT, getUser);
 router.route("/logout").post(verifyJWT, logoutUser);
 router
   .route("/change-avatar")
