@@ -5,6 +5,7 @@ import {
   getPostsByCategory,
   getPostsByAuthor,
   editPost,
+  deletePost,
 } from "../controllers/post.controller.js";
 import { Router } from "express";
 import { verifyJWT } from "../middleware/auth.middleware.js";
@@ -24,5 +25,6 @@ router
 router
   .route("/edit-posts/:id")
   .patch(verifyJWT, upload.single("thumbnail"), editPost);
+router.route("/delete-post/:id").delete(verifyJWT, deletePost);
 
 export default router;

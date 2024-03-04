@@ -10,7 +10,7 @@ import {
 import mongoose from "mongoose";
 
 // CREATE POST
-// POST: api/posts
+// POST: api/posts/create-post
 // PROTECTED
 const createPost = asyncHandler(async (req, res) => {
   const { title, description, category } = req.body;
@@ -59,6 +59,9 @@ const createPost = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, createdPost, "Post created successfully"));
 });
 
+// GET ALL POST
+// GET: api/posts
+// UNPROTECTED
 const getPosts = asyncHandler(async (req, res) => {
   const posts = await Post.find().sort({ updatedAt: -1 });
 
@@ -67,6 +70,9 @@ const getPosts = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, posts, "Posts fetched successfully"));
 });
 
+// GET SINGLE POST
+// GET: api/posts/get-post/:id
+// UNPROTECTED
 const getPost = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
@@ -84,6 +90,9 @@ const getPost = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, post, "Post fetched successfully"));
 });
 
+// GET POST BY CATEGORY
+// GET: api/posts/:category
+// UNPROTECTED
 const getPostsByCategory = asyncHandler(async (req, res) => {
   const { category } = req.params;
 
@@ -104,6 +113,9 @@ const getPostsByCategory = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, posts, "Category posts fetched successfully"));
 });
 
+// GET POST AUTHOR
+// GET: api/posts/author-posts/:id
+// UNPROTECTED
 const getPostsByAuthor = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
@@ -122,6 +134,9 @@ const getPostsByAuthor = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, posts, "Author posts fetched successfully"));
 });
 
+// EDIT POST
+// PATCH: api/posts/edit-posts/:id
+// PROTECTED
 const editPost = asyncHandler(async (req, res) => {
   const { title, description, category } = req.body;
   const { id } = req.params;
@@ -131,7 +146,7 @@ const editPost = asyncHandler(async (req, res) => {
 
   const creatorId = new ObjectId(post.createdBy).valueOf();
 
-  if (!(creatorId == req.user._id)) {
+  if (!(creatorId == req.user?._id)) {
     throw new ApiError(402, "You don't have permission to update this post");
   }
 
@@ -178,6 +193,49 @@ const editPost = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, editedPost, "Posts updated `successfully`"));
 });
 
+const deletePost = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const post = await Post.findById(id);
+
+  if (!post) {
+    throw new ApiError(404, "No post exits");
+  }
+
+  const { ObjectId } = mongoose.Types;
+  const createdBy = new ObjectId(post.createdBy).valueOf();
+
+  if (!(createdBy == req.user?._id)) {
+    throw new ApiError(401, "You have no permission to delete this post");
+  }
+
+  const deletedAvatar = await deleteFromCloudinary(post?.thumbnail, "posts");
+  if (!deletedAvatar) {
+    throw new ApiError(
+      502,
+      "Something went wrong while deleting the post from cloudinary"
+    );
+  }
+
+  const deletedPost = await Post.deleteOne({ _id: id });
+
+  if (!(deletedPost.deletedCount === 1)) {
+    throw new ApiError(502, "Something went wrong while deleting the post");
+  }
+
+  const currentUser = await User.findById(req.user?._id);
+  const userPostsCount = currentUser.posts - 1;
+  await User.findByIdAndUpdate(req.user._id, {
+    $set: {
+      posts: userPostsCount,
+    },
+  });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Post has been deleted successfully"));
+});
+
 export {
   createPost,
   getPost,
@@ -185,4 +243,5 @@ export {
   getPostsByCategory,
   getPostsByAuthor,
   editPost,
+  deletePost,
 };
