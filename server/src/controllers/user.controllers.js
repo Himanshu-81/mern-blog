@@ -176,9 +176,9 @@ const logoutUser = asyncHandler(async (req, res) => {
 // POST : api/users/:id
 // PROTECTED ROUTE
 const getUser = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-
-  const user = await User.findById(id).select("-password -refreshToken");
+  const user = await User.findById(req.user?._id).select(
+    "-password -refreshToken"
+  );
 
   if (!user) {
     throw new ApiError(404, "No user found");
