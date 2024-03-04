@@ -139,6 +139,7 @@ const getPostsByAuthor = asyncHandler(async (req, res) => {
 // PROTECTED
 const editPost = asyncHandler(async (req, res) => {
   const { title, description, category } = req.body;
+
   const { id } = req.params;
 
   const post = await Post.findById(id);
@@ -148,10 +149,6 @@ const editPost = asyncHandler(async (req, res) => {
 
   if (!(creatorId == req.user?._id)) {
     throw new ApiError(402, "You don't have permission to update this post");
-  }
-
-  if (!title && !description && !category) {
-    throw new ApiError(402, "Please provide the required fields");
   }
 
   const updatedPost = {};
@@ -178,6 +175,10 @@ const editPost = asyncHandler(async (req, res) => {
     await deleteFromCloudinary(post?.thumbnail, "posts");
 
     updatedPost.thumbnail = thumbnailUrl.url;
+  }
+
+  if (Object.keys(updatedPost).length === 0) {
+    throw new ApiError(402, "Please fill the required fields");
   }
 
   const editedPost = await Post.findByIdAndUpdate(
