@@ -20,6 +20,7 @@ import {
 } from "./page/index.js";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import AuthorPosts from "./page/author-posts/AuthorPosts.jsx";
+import { SnackbarProvider } from "notistack";
 
 const router = createBrowserRouter([
   {
@@ -46,8 +47,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router}>
-      <App />
-    </RouterProvider>
+    <SnackbarProvider autoHideDuration={2500}>
+      <RouterProvider router={router}>
+        <App />
+      </RouterProvider>
+    </SnackbarProvider>
   </React.StrictMode>
 );

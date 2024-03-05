@@ -12,7 +12,10 @@ const errorHandler = (error, req, res, next) => {
 
   res
     .status(error.code || 500)
-    .json({ message: error.message || "An unknown error occured" });
+    .json({
+      message: error.message || "An unknown error occured",
+      success: error.success,
+    });
 };
 
 export { notFound, errorHandler };
