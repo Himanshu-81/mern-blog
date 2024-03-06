@@ -20,8 +20,6 @@ const Login = () => {
       <div className="container">
         <h2>Sign In</h2>
         <form className="form login__form">
-          <p className="form__error-message">This is an error message</p>
-
           <input
             type="email"
             name="email"
