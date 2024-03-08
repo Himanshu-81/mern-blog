@@ -3,9 +3,16 @@ import { Link } from "react-router-dom";
 import Logo from "../../images/logo.png";
 import { FaBars } from "react-icons/fa";
 import { AiOutlineClose } from "react-icons/ai";
+import { logoutUser } from "../../utils/logout.js";
+import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
+
 import "./Header.css";
 
 const Header = () => {
+  const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
+
   const [isNavShowing, setIsNavShowing] = useState(
     window.innerWidth > 800 ? true : false
   );
@@ -16,6 +23,11 @@ const Header = () => {
     } else {
       true;
     }
+  };
+
+  const handleLogout = async () => {
+    await logoutUser(enqueueSnackbar, navigate);
+    closeNavHandler();
   };
 
   return (
@@ -44,9 +56,7 @@ const Header = () => {
             </li>
             <li>
               {" "}
-              <Link to="/logout" onClick={closeNavHandler}>
-                Logout
-              </Link>
+              <Link onClick={handleLogout}>Logout</Link>
             </li>
           </ul>
         )}

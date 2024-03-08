@@ -144,7 +144,7 @@ const loginUser = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         { loggedInUser, accessToken, refreshToken },
-        "User logged in successfully"
+        "login successfull"
       )
     );
 });
@@ -171,7 +171,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     .status(200)
     .clearCookie("accessToken", options)
     .clearCookie("refreshToken", options)
-    .json(new ApiResponse(200, "Logout successfull"));
+    .json(new ApiResponse(200, {}, "Logout successfull"));
 });
 
 // TO GET THE USER PROFILE

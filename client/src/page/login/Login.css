@@ -6,6 +6,14 @@
     place-items: center;
 }
 
+form .error-message {
+    color: red;
+    font-size: 11px;
+    display: block;
+    height: 14px;
+    margin: -8px 0;
+}
+
 .login h2 {
     margin-bottom: 2rem;
 }

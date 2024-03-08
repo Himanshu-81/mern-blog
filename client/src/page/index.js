@@ -7,7 +7,6 @@ import DeletePosts from "./delete-posts/DeletePosts.jsx";
 import EditPosts from "./edit-posts/EditPosts.jsx";
 import Home from "./home/Home.jsx";
 import Login from "./login/Login.jsx";
-import Logout from "./logout/Logout.jsx";
 import PostDetails from "./post-details/PostDetails.jsx";
 import Register from "./register/Register.jsx";
 import UserProfile from "./user-profile/UserProfile.jsx";
@@ -23,7 +22,6 @@ export {
   EditPosts,
   Home,
   Login,
-  Logout,
   PostDetails,
   Register,
   UserProfile,

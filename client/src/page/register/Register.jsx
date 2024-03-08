@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -20,7 +19,7 @@ const Register = () => {
   const notification = (message, variant) => {
     enqueueSnackbar(message, {
       variant: variant,
-      autoHideDuration: 3500,
+      autoHideDuration: 3000,
       preventDuplicate: true,
     });
   };
@@ -38,7 +37,7 @@ const Register = () => {
         `${import.meta.env.VITE_BASE_URL}/users/register`,
         formData
       );
-      const newUser = response.data;
+      const newUser = await response.data;
       if (!newUser) {
         notification("something went wrong try again later", "error");
       }
