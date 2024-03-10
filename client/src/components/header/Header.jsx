@@ -6,12 +6,14 @@ import { AiOutlineClose } from "react-icons/ai";
 import { logoutUser } from "../../utils/logout.js";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
+import { useUser } from "../../context/userContext.jsx";
 
 import "./Header.css";
 
 const Header = () => {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
+  const { logout } = useUser();
 
   const [isNavShowing, setIsNavShowing] = useState(
     window.innerWidth > 800 ? true : false
@@ -26,7 +28,7 @@ const Header = () => {
   };
 
   const handleLogout = async () => {
-    await logoutUser(enqueueSnackbar, navigate);
+    await logoutUser(enqueueSnackbar, navigate, logout);
     closeNavHandler();
   };
 
