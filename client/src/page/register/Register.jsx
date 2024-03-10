@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useSnackbar } from "notistack";
-import Loading from "../../components/loader/Loading";
+import Loading from "../../components/Loading";
 
 import "./Register.css";
 

@@ -4,7 +4,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useSnackbar } from "notistack";
 import { useUser } from "../../context/userContext";
-import Loading from "../../components/loader/Loading.jsx";
+import Loading from "../../components/Loading.jsx";
 
 import "./Login.css";
 

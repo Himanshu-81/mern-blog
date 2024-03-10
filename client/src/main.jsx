@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-import { Layout } from "./components/index.js";
+import { Layout, AuthLayout } from "./components/index.js";
 import {
   ErrorPage,
   Home,
@@ -29,17 +29,95 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Home /> },
-      { path: "posts/:id", element: <PostDetails /> },
-      { path: "register", element: <Register /> },
-      { path: "Login", element: <Login /> },
-      { path: "profile/:id", element: <UserProfile /> },
-      { path: "authors", element: <Authors /> },
-      { path: "create", element: <CreatePosts /> },
-      { path: "posts/categories/:category", element: <CategoryPosts /> },
-      { path: "posts/users/:id", element: <AuthorPosts /> },
-      { path: "myposts/:id", element: <Dashboard /> },
-      { path: "posts/:id/edit", element: <EditPosts /> },
-      { path: "posts/:id/delete", element: <DeletePosts /> },
+      {
+        path: "posts/:id",
+        element: (
+          <AuthLayout authentication>
+            <PostDetails />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "register",
+        element: (
+          <AuthLayout authentication={false}>
+            <Register />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "Login",
+        element: (
+          <AuthLayout authentication={false}>
+            <Login />
+          </AuthLayout>
+        ),
+      },
+
+      {
+        path: "profile/:id",
+        element: (
+          <AuthLayout authentication>
+            <UserProfile />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "authors",
+        element: (
+          <AuthLayout authentication={false}>
+            <Authors />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "create",
+        element: (
+          <AuthLayout authentication>
+            <CreatePosts />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "posts/categories/:category",
+        element: (
+          <AuthLayout authentication={false}>
+            <CategoryPosts />/
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "posts/users/:id",
+        element: (
+          <AuthLayout authentication={false}>
+            <AuthorPosts />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "myposts/:id",
+        element: (
+          <AuthLayout authentication>
+            <Dashboard />{" "}
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "posts/:id/edit",
+        element: (
+          <AuthLayout authentication>
+            <EditPosts />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "posts/:id/delete",
+        element: (
+          <AuthLayout authentication>
+            <DeletePosts />
+          </AuthLayout>
+        ),
+      },
     ],
   },
 ]);

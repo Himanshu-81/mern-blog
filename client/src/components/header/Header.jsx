@@ -13,7 +13,7 @@ import "./Header.css";
 const Header = () => {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
-  const { logout } = useUser();
+  const { user, userLogin, logout } = useUser();
 
   const [isNavShowing, setIsNavShowing] = useState(
     window.innerWidth > 800 ? true : false
@@ -40,26 +40,38 @@ const Header = () => {
         </Link>
         {isNavShowing && (
           <ul className="nav__menu">
-            <li>
-              <Link to="/profile/dfkdl" onClick={closeNavHandler}>
-                John Doe
-              </Link>
-            </li>
-            <li>
-              <Link to="/create" onClick={closeNavHandler}>
-                Create Post
-              </Link>
-            </li>
-            <li>
-              {" "}
-              <Link to="/authors" onClick={closeNavHandler}>
-                Authors
-              </Link>
-            </li>
-            <li>
-              {" "}
-              <Link onClick={handleLogout}>Logout</Link>
-            </li>
+            {userLogin ? (
+              <>
+                <li>
+                  <Link to="/profile/dfkdl" onClick={closeNavHandler}>
+                    user.name
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/create" onClick={closeNavHandler}>
+                    Create Post
+                  </Link>
+                </li>
+
+                <li>
+                  <Link onClick={handleLogout}>Logout</Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link to="/authors" onClick={closeNavHandler}>
+                    Authors
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/login">Login</Link>
+                </li>
+                <li>
+                  <Link to="/register">Register</Link>
+                </li>
+              </>
+            )}
           </ul>
         )}
         <button
