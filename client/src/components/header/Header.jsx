@@ -44,7 +44,12 @@ const Header = () => {
               <>
                 <li>
                   <Link to="/profile/dfkdl" onClick={closeNavHandler}>
-                    user.name
+                    {user.name}
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/authors" onClick={closeNavHandler}>
+                    Authors
                   </Link>
                 </li>
                 <li>
