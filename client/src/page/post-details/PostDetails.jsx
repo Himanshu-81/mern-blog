@@ -39,7 +39,7 @@ const PostDetails = () => {
       ) : (
         <div className="container post-detail__container">
           <div className="post-detail__header">
-            {/* <PostAuthor /> */}
+            <PostAuthor authorID={post.createdBy} />
             {post.createdBy == user._id && (
               <div className="post-detail__buttons">
                 <Link to={`/posts/${post._id}/edit`} className="btn sm primary">

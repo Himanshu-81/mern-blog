@@ -2,8 +2,8 @@ import React from "react";
 import HashLoader from "react-spinners/HashLoader";
 
 const override = {
-  minHeight: "100vh",
-  minWidth: "100%",
+  height: "80vh",
+  width: "100%",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -15,8 +15,8 @@ const Loading = () => {
       color="#d69c36"
       size={75}
       aria-label="Loading Spinner"
-      cssOverride={override}
       data-testid="loader"
+      cssOverride={override}
     />
   );
 };
