@@ -1,24 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PostItem from "../post-item/PostItem.jsx";
+import axios from "axios";
+import Loading from "../Loading.jsx";
+import { postTimeCalculate } from "../../utils/postTimeCalculate.js";
 
-import { DUMMY_POSTS } from "../../config.js";
 import "./Posts.css";
 
 const Posts = () => {
-  const [posts, setPosts] = useState(DUMMY_POSTS);
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(null);
+
+  const calculateRelativeTime = postTimeCalculate();
+
+  useEffect(() => {
+    const getPosts = async () => {
+      try {
+        setLoading(true);
+        const posts = await axios.get(`${import.meta.env.VITE_BASE_URL}/posts`);
+        setLoading(false);
+        const postsData = posts.data.data.map((post) => ({
+          ...post,
+          relativeTime: calculateRelativeTime(post.updatedAt),
+        }));
+        setPosts(postsData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getPosts();
+  }, []);
+
   return (
     <section className="posts">
-      {posts.length > 0 ? (
+      {loading ? (
+        <Loading />
+      ) : posts.length > 0 ? (
         <div className="container posts__container">
-          {posts.map(({ id, thumbnail, category, title, desc, authorID }) => (
+          {posts.map((post) => (
             <PostItem
-              key={id}
-              postID={id}
-              thumbnail={thumbnail}
-              category={category}
-              desc={desc}
-              authorID={authorID}
-              title={title}
+              key={post._id}
+              postID={post._id}
+              thumbnail={post.thumbnail}
+              category={post.category}
+              description={post.description}
+              authorID={post.createdBy}
+              title={post.title}
+              postTime={post.relativeTime}
             />
           ))}
         </div>

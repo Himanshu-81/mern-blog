@@ -32,7 +32,7 @@ const router = createBrowserRouter([
       {
         path: "posts/:id",
         element: (
-          <AuthLayout authentication>
+          <AuthLayout authentication={false}>
             <PostDetails />
           </AuthLayout>
         ),

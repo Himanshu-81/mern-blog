@@ -82,7 +82,7 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   const user = await User.create({
-    name,
+    name: name.charAt(0).toUpperCase() + name.slice(1),
     email: email.toLowerCase(),
     password: passwordCheck,
     avatar: avatar.url,
@@ -178,9 +178,13 @@ const logoutUser = asyncHandler(async (req, res) => {
 // POST : api/users/:id
 // PROTECTED ROUTE
 const getUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user?._id).select(
-    "-password -refreshToken"
-  );
+  const { id } = req.params;
+
+  if (!id) {
+    throw new ApiError(404, "Id is required");
+  }
+
+  const user = await User.findById(id).select("-password -refreshToken");
 
   if (!user) {
     throw new ApiError(404, "No user found");

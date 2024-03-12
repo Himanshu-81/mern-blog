@@ -1,17 +1,39 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Avatar from "../../images/avatar1.jpg";
+import axios from "axios";
+
 import "./PostAuthor.css";
 
-const PostAuthor = ({ authorID }) => {
+const PostAuthor = ({ authorID, postTime }) => {
+  const [author, setAuthor] = useState([]);
+  const [loading, setLoading] = useState(null);
+
+  useEffect(() => {
+    const getAuthor = async (id) => {
+      try {
+        setLoading(true);
+        const author = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/users/get-user/${id}`
+        );
+        setLoading(false);
+        setAuthor(author.data.data);
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+      }
+    };
+
+    getAuthor(authorID);
+  }, [authorID]);
+
   return (
     <Link to={`/posts/users/${authorID}`} className="post__author">
       <div className="post__author-avatar">
-        <img src={Avatar} alt="" />
+        <img src={author.avatar} alt="" />
       </div>
       <div className="post__author-details">
-        <h5>By: Himanshu</h5>
-        <small>Just Now</small>
+        <h5>By: {author.name}</h5>
+        <small>{postTime}</small>
       </div>
     </Link>
   );

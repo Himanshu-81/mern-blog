@@ -2,18 +2,17 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { useSnackbar } from "notistack";
 import { useUser } from "../../context/userContext";
 import Loading from "../../components/Loading.jsx";
+import { useNotification } from "../../utils/notification.js";
 
 import "./Login.css";
 
 const Login = () => {
   const [loading, setLoading] = useState(null);
 
-  const { enqueueSnackbar } = useSnackbar();
-
   const navigate = useNavigate();
+  const notification = useNotification();
   const { login } = useUser();
 
   const {
@@ -21,14 +20,6 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  const notification = (message, variant) => {
-    enqueueSnackbar(message, {
-      variant: variant,
-      autoHideDuration: 3000,
-      preventDuplicate: true,
-    });
-  };
 
   const loginUser = async (data) => {
     try {

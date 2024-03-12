@@ -20,7 +20,7 @@ router.route("/login").post(loginUser);
 router.route("/").get(getAuthors);
 
 // secured route
-router.route("/get-user").get(verifyJWT, getUser);
+router.route("/get-user/:id").get(getUser);
 router.route("/logout").post(verifyJWT, logoutUser);
 router
   .route("/change-avatar")

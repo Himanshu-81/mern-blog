@@ -3,10 +3,18 @@ import { Link } from "react-router-dom";
 import PostAuthor from "../post-author/PostAuthor.jsx";
 import "./PostItem.css";
 
-const PostItem = ({ postID, category, title, desc, authorID, thumbnail }) => {
+const PostItem = ({
+  postID,
+  category,
+  title,
+  description,
+  authorID,
+  thumbnail,
+  postTime,
+}) => {
   const shortDescription =
-    desc.length > 145 ? desc.substr(0, 145) + "..." : desc;
-  const postTitle = title.length > 30 ? desc.substr(0, 30) + "..." : desc;
+    description.length > 145 ? description.substr(0, 145) + "..." : description;
+  const postTitle = title.length > 30 ? title.substr(0, 30) + "..." : title;
   return (
     <article className="post">
       <div className="post__thumbnail">
@@ -16,9 +24,9 @@ const PostItem = ({ postID, category, title, desc, authorID, thumbnail }) => {
         <Link to={`/posts/${postID}`}>
           <h3>{postTitle}</h3>
         </Link>
-        <p>{shortDescription}</p>
+        <p dangerouslySetInnerHTML={{ __html: description }}></p>
         <div className="post__footer">
-          <PostAuthor authorID={authorID} />
+          <PostAuthor authorID={authorID} postTime={postTime} />
           <Link to={`/posts/categories/${category}`} className="btn category">
             {category}
           </Link>

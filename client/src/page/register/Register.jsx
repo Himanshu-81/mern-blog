@@ -2,31 +2,22 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { useSnackbar } from "notistack";
 import Loading from "../../components/Loading";
+import { useNotification } from "../../utils/notification";
 
 import "./Register.css";
 
 const Register = () => {
   const [loading, setLoading] = useState(null);
 
-  const { enqueueSnackbar } = useSnackbar();
-
   const navigate = useNavigate();
+  const notification = useNotification();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  const notification = (message, variant) => {
-    enqueueSnackbar(message, {
-      variant: variant,
-      autoHideDuration: 3000,
-      preventDuplicate: true,
-    });
-  };
 
   const registerUser = async (data) => {
     try {
@@ -73,7 +64,7 @@ const Register = () => {
             )}
             <input
               type="text"
-              placeholder="Full Name"
+              placeholder="Name"
               {...register("name", { required: true, pattern: /^[A-Za-z]+$/i })}
             />
 

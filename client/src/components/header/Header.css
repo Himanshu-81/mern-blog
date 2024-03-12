@@ -30,6 +30,19 @@ nav {
     gap: 3rem;
 }
 
+.nav-avatar {
+    width: 2.5rem;
+    aspect-ratio: 1/1;
+    border-radius: var(--radius-4);
+    overflow: hidden;
+    display: inline-block;
+    margin-right: -1.5rem;
+}
+
+.nav-avatar {
+    object-fit: cover;
+}
+
 .nav__toggle-btn {
     display: none;
 }
@@ -62,6 +75,11 @@ nav {
         background: var(--color-white);
         padding: 0.85rem 2.5rem;
     }
+
+    .avatar-container {
+        display: none;
+    }
+
 
     .nav__toggle-btn {
         display: inline-block;

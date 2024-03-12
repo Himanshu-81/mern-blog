@@ -42,6 +42,15 @@ const Header = () => {
           <ul className="nav__menu">
             {userLogin ? (
               <>
+                <li className="avatar-container">
+                  <Link
+                    to="/profile/dfkdl"
+                    onClick={closeNavHandler}
+                    className="nav-avatar"
+                  >
+                    <img src={user.avatar} alt="" />
+                  </Link>
+                </li>
                 <li>
                   <Link to="/profile/dfkdl" onClick={closeNavHandler}>
                     {user.name}

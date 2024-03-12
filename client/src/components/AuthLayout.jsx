@@ -7,10 +7,21 @@ export default function Protected({ children, authentication = true }) {
   const navigate = useNavigate();
   const [loader, setLoader] = useState(true);
   const { userLogin } = useUser();
+  const currentPath = window.location.pathname;
 
   useEffect(() => {
+    if (authentication && userLogin === null) {
+      return;
+    }
+
     if (authentication && !userLogin) {
       navigate("/login");
+    }
+    if (
+      (userLogin && currentPath == "/login") ||
+      (userLogin && currentPath == "/register")
+    ) {
+      navigate("/");
     }
     setLoader(false);
   }, [userLogin, navigate, authentication]);
