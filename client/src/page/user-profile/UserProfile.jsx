@@ -22,7 +22,11 @@ const UserProfile = () => {
 
   const { user, login } = useUser();
 
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const notification = useNotification();
 
   const avatarInputChange = (e) => {
@@ -47,6 +51,25 @@ const UserProfile = () => {
       setLoading(false);
       notification(updatedAvatar.message, "success");
       login(updatedAvatar.data);
+    } catch (error) {
+      setLoading(false);
+      notification(error.response.data.message, "error");
+    }
+  };
+
+  const updateuserDetails = async (data) => {
+    try {
+      setLoading(true);
+      const response = await axios.patch(
+        `${import.meta.env.VITE_BASE_URL}/users/update-user`,
+        data,
+        { withCredentials: true }
+      );
+
+      const updatedUser = await response.data;
+      setLoading(false);
+      notification(updatedUser.message, "success");
+      login(updatedUser.data);
     } catch (error) {
       setLoading(false);
       notification(error.response.data.message, "error");
@@ -91,38 +114,62 @@ const UserProfile = () => {
                 )}
               </form>
             </div>
-            <h1>John Doe</h1>
+            <h1>{user.name}</h1>
 
             {/* Form to update user details */}
-            <form className="form profile__form">
+
+            <form
+              className="form profile__form"
+              onSubmit={handleSubmit(updateuserDetails)}
+            >
+              <h5 style={{ textAlign: "left" }}>
+                Want to update the profile details?
+              </h5>
+              {errors.name ? (
+                <span className="error-message">Name is required</span>
+              ) : (
+                <span className="error-message"></span>
+              )}
               <input
                 type="text"
                 placeholder="Enter Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                {...register("name", { required: true })}
               />
+
+              {errors.email ? (
+                <span className="error-message">Email is required</span>
+              ) : (
+                <span className="error-message"></span>
+              )}
               <input
                 type="email"
                 placeholder="Enter Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                {...register("email", { required: true })}
               />
+
+              {errors.oldPassword ? (
+                <span className="error-message">Password is required</span>
+              ) : (
+                <span className="error-message"></span>
+              )}
               <input
                 type="password"
                 placeholder="Enter Current Password"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
+                {...register("oldPassword", { required: true })}
               />
+
+              {errors.newPassword ? (
+                <span className="error-message">Password is required</span>
+              ) : (
+                <span className="error-message"></span>
+              )}
               <input
                 type="password"
                 placeholder="Enter New Password"
-                value={newPassoword}
-                onChange={(e) => setNewPassword(e.target.value)}
+                {...register("newPassword", { required: true })}
               />
 
-              <button type="submit" className="btn primary">
-                Update details
-              </button>
+              <button className="btn primary">Update details</button>
             </form>
           </div>
         </div>

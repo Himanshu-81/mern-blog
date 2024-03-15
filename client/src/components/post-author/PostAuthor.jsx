@@ -6,19 +6,18 @@ import "./PostAuthor.css";
 
 const PostAuthor = ({ authorID, postTime }) => {
   const [author, setAuthor] = useState([]);
-  const [loading, setLoading] = useState(null);
 
   useEffect(() => {
+    if (authorID == undefined) {
+      return;
+    }
     const getAuthor = async (id) => {
       try {
-        setLoading(true);
         const author = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/users/get-user/${id}`
         );
-        setLoading(false);
         setAuthor(author.data.data);
       } catch (error) {
-        setLoading(false);
         console.log(error);
       }
     };

@@ -3,26 +3,33 @@ import PostAuthor from "../../components/post-author/PostAuthor";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Loading from "../../components/Loading";
+import { postTimeCalculate } from "../../utils/postTimeCalculate.js";
 
 import "./PostDetails.css";
 import { useUser } from "../../context/userContext";
 
 const PostDetails = () => {
-  const [post, setPost] = useState([]);
+  const [post, setPost] = useState({});
   const [loading, setLoading] = useState(null);
 
   const { id } = useParams();
   const { user } = useUser();
 
+  const calculateRelativeTime = postTimeCalculate();
+
   useEffect(() => {
     const getPostDetails = async (id) => {
       try {
         setLoading(true);
-        const post = await axios.get(
+        const response = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/posts/get-post/${id}`
         );
+        const authorPost = await response.data;
         setLoading(false);
-        setPost(post.data.data);
+        (authorPost.data.relativeTime = calculateRelativeTime(
+          authorPost.data.updatedAt
+        )),
+          setPost(authorPost.data);
       } catch (error) {
         setLoading(false);
         console.log(error);
@@ -39,7 +46,10 @@ const PostDetails = () => {
       ) : (
         <div className="container post-detail__container">
           <div className="post-detail__header">
-            <PostAuthor authorID={post.createdBy} />
+            <PostAuthor
+              authorID={post.createdBy}
+              postTime={post.relativeTime}
+            />
             {post.createdBy == user._id && (
               <div className="post-detail__buttons">
                 <Link to={`/posts/${post._id}/edit`} className="btn sm primary">

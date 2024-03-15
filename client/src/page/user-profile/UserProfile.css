@@ -62,6 +62,15 @@
     width: var(--form-width);
 }
 
+form .error-message {
+    color: red;
+    font-size: 11px;
+    display: block;
+    height: 14px;
+    margin: -8px 0;
+    text-align: left;
+}
+
 
 /* **********************MEDIA QUERIES (small screen) ***********************/
 

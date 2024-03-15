@@ -180,6 +180,10 @@ const logoutUser = asyncHandler(async (req, res) => {
 const getUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
+  if (id == undefined) {
+    return;
+  }
+
   if (!id) {
     throw new ApiError(404, "Id is required");
   }
@@ -200,7 +204,6 @@ const getUser = asyncHandler(async (req, res) => {
 // PROTECTED
 const changeUserAvatar = asyncHandler(async (req, res) => {
   const avatarLocalPath = req.file?.path;
-  console.log(req.file?.path);
 
   if (!avatarLocalPath) {
     throw new ApiError(400, "Avatar file is missing");
@@ -270,7 +273,7 @@ const updateUserDetails = asyncHandler(async (req, res) => {
 
   const updateFields = {};
 
-  if (name) updateFields.name = name;
+  if (name) updateFields.name = name.charAt(0).toUpperCase() + name.slice(1);
   if (email) updateFields.email = email;
 
   const updatedUser = await User.findByIdAndUpdate(
@@ -283,7 +286,13 @@ const updateUserDetails = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, updatedUser, "User details updated"));
+    .json(
+      new ApiResponse(
+        200,
+        updatedUser,
+        "Your profile details updated successfully"
+      )
+    );
 });
 
 // UPDATE THE CURRENT PASSWORD

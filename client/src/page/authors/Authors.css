@@ -4,6 +4,10 @@
     gap: 3rem;
 }
 
+.authors {
+    min-height: calc(100vh - 430px);
+}
+
 .author {
     background-color: var(--color-white);
     padding: 1rem;
