@@ -12,7 +12,7 @@ const override = {
 const Loading = () => {
   return (
     <HashLoader
-      color="#d69c36"
+      color="black"
       size={75}
       aria-label="Loading Spinner"
       data-testid="loader"

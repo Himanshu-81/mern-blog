@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { DUMMY_POSTS } from "../../config.js";
 import PostItem from "../../components/post-item/PostItem.jsx";
 import { useParams } from "react-router-dom";
 import "./CategoryPosts.css";

@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Error from "../../images/error.png";
 import "./ErrorPage.css";
 
 const ErrorPage = () => {
@@ -10,7 +9,7 @@ const ErrorPage = () => {
         <Link to="/" className="btn">
           Go Back Home
         </Link>
-        <img src={Error} />
+        <p style={{ color: "red" }}>Resource not found</p>
       </div>
     </section>
   );

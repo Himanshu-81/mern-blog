@@ -26,6 +26,8 @@ const postSchema = new Schema(
         "Uncategorized",
         "Weather",
         "Technology",
+        "Democracy",
+        "Sports",
       ],
       message: "{VALUE is not supported",
       required: true,

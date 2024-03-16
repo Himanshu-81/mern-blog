@@ -59,8 +59,11 @@ const CreatePosts = () => {
     "Entertainment",
     "Art",
     "Investment",
-    "uncategorized",
-    "weather",
+    "Uncategorized",
+    "Weather",
+    "Technology",
+    "Democracy",
+    "Sports",
   ];
 
   const handleDescriptionChange = (content, delta, source, editor) => {

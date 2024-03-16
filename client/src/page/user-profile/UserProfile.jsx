@@ -80,7 +80,7 @@ const UserProfile = () => {
         <Loading />
       ) : (
         <div className="container profile__container">
-          <Link to={`/myposts/fjdklsf`} className="btn">
+          <Link to={`/myposts/${user?._id}`} className="btn">
             My posts
           </Link>
 

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Logo from "../../images/logo.png";
 import { FaBars } from "react-icons/fa";
 import { AiOutlineClose } from "react-icons/ai";
 import { logoutUser } from "../../utils/logout.js";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { useUser } from "../../context/userContext.jsx";
+import Logo from "../../assets/blog.png";
 
 import "./Header.css";
 
