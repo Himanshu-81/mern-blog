@@ -196,6 +196,7 @@ const editPost = asyncHandler(async (req, res) => {
 
 const deletePost = asyncHandler(async (req, res) => {
   const { id } = req.params;
+  console.log(id);
 
   const post = await Post.findById(id);
 
@@ -218,11 +219,11 @@ const deletePost = asyncHandler(async (req, res) => {
     );
   }
 
-  const deletedPost = await Post.deleteOne({ _id: id });
+  await Post.deleteOne({ _id: id });
 
-  if (!(deletedPost.deletedCount === 1)) {
-    throw new ApiError(502, "Something went wrong while deleting the post");
-  }
+  // if (!(deletedPost.deletedCount === 1)) {
+  //   throw new ApiError(502, "Something went wrong while deleting the post");
+  // }
 
   const currentUser = await User.findById(req.user?._id);
   const userPostsCount = currentUser.posts - 1;

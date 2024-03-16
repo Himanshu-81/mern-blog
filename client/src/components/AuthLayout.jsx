@@ -10,10 +10,6 @@ export default function Protected({ children, authentication = true }) {
   const currentPath = window.location.pathname;
 
   useEffect(() => {
-    if (authentication && userLogin === null) {
-      return;
-    }
-
     if (authentication && !userLogin) {
       navigate("/login");
     }

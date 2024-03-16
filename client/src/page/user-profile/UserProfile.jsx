@@ -12,27 +12,25 @@ import "./UserProfile.css";
 
 const UserProfile = () => {
   const [avatar, setAvatar] = useState();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassoword, setNewPassword] = useState("");
-  const [showEdit, setShowEdit] = useState(true);
-
-  const [loading, setLoading] = useState(null);
+  const [showEditAvatar, setShowEditAvatar] = useState(true);
+  const [loadingAvatar, setLoadingAvatar] = useState(null);
+  const [loadingDetails, setLoadingDetails] = useState(null);
 
   const { user, login } = useUser();
 
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
+    register: registerDetails,
+    handleSubmit: handleSubmitDetails,
+    formState: { errors: errorsDetails },
   } = useForm();
+  const { register: registerAvatar, handleSubmit: handleSubmitAvatar } =
+    useForm();
   const notification = useNotification();
 
   const avatarInputChange = (e) => {
     e.preventDefault();
     setAvatar(e.target.files[0]);
-    setShowEdit((prev) => !prev);
+    setShowEditAvatar((prev) => !prev);
   };
 
   const changeUserAvatar = async (data) => {
@@ -40,26 +38,26 @@ const UserProfile = () => {
       const formData = new FormData();
       formData.append("avatar", avatar);
 
-      setShowEdit((prev) => !prev);
-      setLoading(true);
+      setShowEditAvatar((prev) => !prev);
+      setLoadingAvatar(true);
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/users/change-avatar`,
         formData,
         { withCredentials: true }
       );
       const updatedAvatar = await response.data;
-      setLoading(false);
+      setLoadingAvatar(false);
       notification(updatedAvatar.message, "success");
       login(updatedAvatar.data);
     } catch (error) {
-      setLoading(false);
+      setLoadingAvatar(false);
       notification(error.response.data.message, "error");
     }
   };
 
-  const updateuserDetails = async (data) => {
+  const updateUserDetails = async (data) => {
     try {
-      setLoading(true);
+      setLoadingDetails(true);
       const response = await axios.patch(
         `${import.meta.env.VITE_BASE_URL}/users/update-user`,
         data,
@@ -67,18 +65,18 @@ const UserProfile = () => {
       );
 
       const updatedUser = await response.data;
-      setLoading(false);
+      setLoadingDetails(false);
       notification(updatedUser.message, "success");
       login(updatedUser.data);
     } catch (error) {
-      setLoading(false);
+      setLoadingDetails(false);
       notification(error.response.data.message, "error");
     }
   };
 
   return (
     <section className="profile">
-      {loading ? (
+      {loadingAvatar || loadingDetails ? (
         <Loading />
       ) : (
         <div className="container profile__container">
@@ -94,7 +92,7 @@ const UserProfile = () => {
               {/* Form to update avatar */}
               <form
                 className="avatar__form"
-                onSubmit={handleSubmit(changeUserAvatar)}
+                onSubmit={handleSubmitAvatar(changeUserAvatar)}
               >
                 <input
                   type="file"
@@ -103,7 +101,7 @@ const UserProfile = () => {
                   accept="png, jpg, jpeg"
                   onChange={avatarInputChange}
                 />
-                {showEdit ? (
+                {showEditAvatar ? (
                   <label htmlFor="avatar">
                     <FaEdit />
                   </label>
@@ -120,12 +118,12 @@ const UserProfile = () => {
 
             <form
               className="form profile__form"
-              onSubmit={handleSubmit(updateuserDetails)}
+              onSubmit={handleSubmitDetails(updateUserDetails)}
             >
               <h5 style={{ textAlign: "left" }}>
                 Want to update the profile details?
               </h5>
-              {errors.name ? (
+              {errorsDetails.name ? (
                 <span className="error-message">Name is required</span>
               ) : (
                 <span className="error-message"></span>
@@ -133,10 +131,10 @@ const UserProfile = () => {
               <input
                 type="text"
                 placeholder="Enter Name"
-                {...register("name", { required: true })}
+                {...registerDetails("name", { required: true })}
               />
 
-              {errors.email ? (
+              {errorsDetails.email ? (
                 <span className="error-message">Email is required</span>
               ) : (
                 <span className="error-message"></span>
@@ -144,10 +142,10 @@ const UserProfile = () => {
               <input
                 type="email"
                 placeholder="Enter Email"
-                {...register("email", { required: true })}
+                {...registerDetails("email", { required: true })}
               />
 
-              {errors.oldPassword ? (
+              {errorsDetails.oldPassword ? (
                 <span className="error-message">Password is required</span>
               ) : (
                 <span className="error-message"></span>
@@ -155,10 +153,10 @@ const UserProfile = () => {
               <input
                 type="password"
                 placeholder="Enter Current Password"
-                {...register("oldPassword", { required: true })}
+                {...registerDetails("oldPassword", { required: true })}
               />
 
-              {errors.newPassword ? (
+              {errorsDetails.newPassword ? (
                 <span className="error-message">Password is required</span>
               ) : (
                 <span className="error-message"></span>
@@ -166,7 +164,7 @@ const UserProfile = () => {
               <input
                 type="password"
                 placeholder="Enter New Password"
-                {...register("newPassword", { required: true })}
+                {...registerDetails("newPassword", { required: true })}
               />
 
               <button className="btn primary">Update details</button>

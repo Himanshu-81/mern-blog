@@ -44,7 +44,7 @@ const Header = () => {
               <>
                 <li className="avatar-container">
                   <Link
-                    to="/profile/dfkdl"
+                    to={`/profile/${user._id}`}
                     onClick={closeNavHandler}
                     className="nav-avatar"
                   >
@@ -52,7 +52,7 @@ const Header = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/profile/dfkdl" onClick={closeNavHandler}>
+                  <Link to={`/profile/${user._id}`} onClick={closeNavHandler}>
                     {user.name}
                   </Link>
                 </li>

@@ -1,3 +1,7 @@
+.posts {
+    min-height: calc(100vh - 420px);
+}
+
 .posts__container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

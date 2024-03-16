@@ -103,7 +103,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "posts/:id/edit",
+        path: "edit-post/:id",
         element: (
           <AuthLayout authentication>
             <EditPosts />
@@ -111,7 +111,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "posts/:id/delete",
+        path: "delete-post/:id",
         element: (
           <AuthLayout authentication>
             <DeletePosts />

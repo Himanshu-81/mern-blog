@@ -1,3 +1,7 @@
+.dashboard {
+    min-height: calc(100vh - 420px);
+}
+
 .dashboard__container {
     display: flex;
     flex-direction: column;

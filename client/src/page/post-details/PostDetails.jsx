@@ -50,18 +50,25 @@ const PostDetails = () => {
               authorID={post.createdBy}
               postTime={post.relativeTime}
             />
-            {post.createdBy == user._id && (
-              <div className="post-detail__buttons">
-                <Link to={`/posts/${post._id}/edit`} className="btn sm primary">
-                  edit
-                </Link>
-                <Link
-                  to={`/posts/${post._id}/delete`}
-                  className="btn sm danger"
-                >
-                  delete
-                </Link>
-              </div>
+            {user && (
+              <>
+                {post.createdBy == user._id && (
+                  <div className="post-detail__buttons">
+                    <Link
+                      to={`/edit-post/${post._id}`}
+                      className="btn sm primary"
+                    >
+                      edit
+                    </Link>
+                    <Link
+                      to={`/delete-post/${post._id}`}
+                      className="btn sm danger"
+                    >
+                      delete
+                    </Link>
+                  </div>
+                )}
+              </>
             )}
           </div>
           <h1>{post.title}</h1>
