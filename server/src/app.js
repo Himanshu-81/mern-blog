@@ -15,7 +15,7 @@ app.use(
   cors({
     credentials: true,
     origin: "https://mern-blog-frontend-vert-three.vercel.app",
-    methods: "GET,PUT,POST,DELETE, PATCH",
+    methods: ["GET", "PUT", "POST", "DELETE", "PATCH"]
   })
 );
 
