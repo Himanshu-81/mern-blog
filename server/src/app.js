@@ -12,7 +12,11 @@ import {
 const app = express();
 
 app.use(
-  cors()
+  cors({
+    credentials: true,
+    origin: "https://mern-blog-frontend-umber.vercel.app",
+    methods: ["GET", "PUT", "POST", "DELETE", "PATCH"]
+  })
 );
 
 app.use(
