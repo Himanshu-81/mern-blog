@@ -14,7 +14,8 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: "https://mern-blog-frontend-rho-sooty.vercel.app/",
+    origin: "http://localhost:5173",
+    methods: "GET,PUT,POST,DELETE, PATCH",
   })
 );
 
