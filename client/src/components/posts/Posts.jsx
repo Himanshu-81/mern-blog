@@ -16,14 +16,7 @@ const Posts = () => {
     const getPosts = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(
-  `${import.meta.env.VITE_BASE_URL}/posts`,
-  {
-    headers: {
-      'Content-Type': 'application/json',
-    }
-  }
-);
+        const posts = await axios.get(`${import.meta.env.VITE_BASE_URL}/posts`);
         setLoading(false);
         const postsData = posts.data.data.map((post) => ({
           ...post,
