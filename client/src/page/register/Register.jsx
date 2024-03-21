@@ -42,7 +42,8 @@ const Register = () => {
       navigate("/login");
     } catch (error) {
       setLoading(false);
-      notification(error.response.data.message, "error");
+      console.log(error)
+      
     }
   };
 
