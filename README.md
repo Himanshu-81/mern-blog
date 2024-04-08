@@ -1,6 +1,5 @@
 # MERN-blog
 
-## Disclaimer --> Project is still in progress
 
 MERN-Blog offers authors a seamless platform to create, publish, and manage their blogs online. With intuitive features, customizable themes, and real-time updates, unleash your creativity and join our vibrant community today!
 
